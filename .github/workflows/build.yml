@@ -29,7 +29,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: freshautomations/debian-builder:1.0.0
-          options: -v ${{ github.workspace }}/home-assistant:/mnt -e VERSION=$VERSION -e NAME=home-assistant -e DEBUG=1
+          options: -v ${{ github.workspace }}/home-assistant:/mnt -e VERSION="${{ env.VERSION }}" -e NAME=home-assistant -e DEBUG=1
           run: /usr/bin/entrypoint.sh
       - name: Copy netinst ISO for quicker build of the next step
         run: cp home-assistant/debian-*-netinst.iso custom/ || echo "no ISO found"
@@ -37,7 +37,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: freshautomations/debian-builder:1.0.0
-          options: -v ${{ github.workspace }}/custom:/mnt -e VERSION=$VERSION -e NAME=home-assistant -e DEBUG=1 -e FORCE=1
+          options: -v ${{ github.workspace }}/custom:/mnt -e VERSION="${{ env.VERSION }}" -e NAME=home-assistant -e DEBUG=1 -e FORCE=1
           run: /usr/bin/entrypoint.sh
       - uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
